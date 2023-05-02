@@ -20,7 +20,8 @@ class Numero:
 
             :return: True si el número tiene letras, False si no.
         '''
-        return any(c.isalpha() for c in self.__valor)
+        text = str(self.__valor)
+        return any(c.isalpha() for c in text)
     
     def __str__(self) -> str:
         '''
@@ -36,18 +37,28 @@ class Numero:
 
             :return: El número en decimal.
         '''
+
         if self.__base != 10:
             return int(self.__valor, self.__base)
         return int(self.__valor)
     
-    def binario(self) -> str:
+    def binario(self, precision: int = 0) -> str:
         '''
             Representación del número en binario.
 
             :return: El número en binario.
         '''
         if self.__base != 2:
-            return bin(self.decimal())[2:]
+            entero = int(self.__valor)
+            decimal = self.__valor - entero
+            binario = bin(entero)[2:]
+            if precision > 0:
+                binario += '.'
+                for i in range(precision):
+                    decimal *= 2
+                    binario += str(int(decimal))
+                    decimal -= int(decimal)
+            return binario
         return self.__valor
     
     def octal(self) -> str:
